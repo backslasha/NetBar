@@ -7,6 +7,9 @@
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
+	<session-config>
+		<session-timeout>1440</session-timeout>
+	</session-config>
 
 	<servlet>
 		<servlet-name>ControllerServlet</servlet-name>
@@ -20,8 +23,40 @@
 			<param-value>com.action.LogoutAction</param-value>
 		</init-param>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>ControllerServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>AjaxServlet</servlet-name>
+		<servlet-class>com.servlet.AjaxServlet</servlet-class>
+		<init-param>
+			<param-name>uses</param-name>
+			<param-value>com.ajax.ComputerUsesAction</param-value>
+		</init-param>
+		<init-param>
+			<param-name>managerMessage</param-name>
+			<param-value>com.ajax.ManagerMessageAction</param-value>
+		</init-param>
+		<init-param>
+			<param-name>computerStatus</param-name>
+			<param-value>com.ajax.ComputerStatusAction</param-value>
+		</init-param>
+		<init-param>
+			<param-name>members</param-name>
+			<param-value>com.ajax.MembersAction</param-value>
+		</init-param>
+		<init-param>
+			<param-name>consumptions</param-name>
+			<param-value>com.ajax.ConsumptionsAction</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>AjaxServlet</servlet-name>
+		<url-pattern>*.ajax</url-pattern>
 	</servlet-mapping>
 </web-app>

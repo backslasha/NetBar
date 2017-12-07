@@ -93,14 +93,16 @@ public class LogoutAction implements Action {
 		ComputerDAOImpl computerDAOImpl = new ComputerDAOImpl();
 		computerDAOImpl.updateStatus(Long.parseLong(computerNo), "idle");
 		
-		MemberDAOImpl memberDAOImpl = new MemberDAOImpl();
-		
-		// online -> offline
-		memberDAOImpl.updateStatus(Long.parseLong(memberNo), "offline");
-		
 		// update funds and status
+		MemberDAOImpl memberDAOImpl = new MemberDAOImpl();
 		Member member = memberDAOImpl.query(Long.parseLong(memberNo));
+		// 用户帐号已经下线
+		if(member.getStatus().equals("offline")) {
+			request.getSession().setAttribute("message", "扣费失败，该帐号已经结帐下线！");
+			return "error.jsp";
+		}
 		int minutes = (int) (Calendar.getInstance().getTimeInMillis()-member.getLastLoginDate().getTime())/1000/60;
+		if(minutes==0)minutes++;
 		member.setFunds(member.getFunds().subtract(Counter.expense(minutes)));
 		member.setStatus("offline");
 		memberDAOImpl.update(Long.parseLong(memberNo), member);
@@ -112,6 +114,8 @@ public class LogoutAction implements Action {
 		consumption.setTimelogin(member.getLastLoginDate());
 		consumption.setTimeLogout(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		consumption.setCost(Counter.expense(minutes));
+		
+		request.getSession().invalidate();
 		
 		if(consumptionDAOImpl.insert(consumption)) {
 			System.out.println("insert a consumption success.");

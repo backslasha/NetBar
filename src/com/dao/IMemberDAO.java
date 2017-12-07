@@ -4,15 +4,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.bean.ComputerUseRecord;
 import com.bean.Member;
 
 public interface IMemberDAO {
+	
 	Member query(long MemberNo);
 
 	Member query(String memberName);
 
-	List<Member> queryAll();
+	List<Member> list();
 	
+	List<Member> list(int start,int count);
+	
+	List<Member> list(int start,int count, String filter, String filterValue);
+
 	boolean add(Member member);
 
 	boolean delete(long memberNo);
@@ -26,5 +32,4 @@ public interface IMemberDAO {
 	boolean updateLastLoginTime(long memberNo);
 
 	boolean updatePassword(String password);
-
 }

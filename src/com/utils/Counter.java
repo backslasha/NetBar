@@ -7,7 +7,10 @@ import java.util.Date;
 
 public class Counter {
 	public static BigDecimal expense(int minutes) {
-		return new BigDecimal((2.5 * Math.ceil(minutes/30))); 
+		int unit = minutes/30;
+		if(minutes%30!=0) {
+			unit++;
+		}
+		return new BigDecimal(1.5 *unit); 
 	}
-	
 }

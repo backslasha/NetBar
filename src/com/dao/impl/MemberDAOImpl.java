@@ -32,7 +32,7 @@ public class MemberDAOImpl implements IMemberDAO {
 	}
 
 	@Override
-	public List<Member> queryAll() {
+	public List<Member> list() {
 		// TODO Auto-generated method stub
 		String sql = "select * from Member";
 		List<Member> members = null;
@@ -44,9 +44,43 @@ public class MemberDAOImpl implements IMemberDAO {
 		}
 		return members;
 	}
+	@Override
+	public List<Member> list(int start,int count) {
+		// TODO Auto-generated method stub
+		String sql = "select * from Member"+" limit "+start+","+count;;
+		List<Member> members = null;
+		try {
+			members = utils.findMoreRefResult(sql, null, Member.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return members;
+	}
+	@Override
+	public List<Member> list(int start,int count, String filter, String filterValue) {
+		String sql = "select * from Member where ";
+		if (filter.equals("date")) {
+			String last = filterValue.charAt(filterValue.length()-1)+"";
+			String tomorrow =  filterValue.substring(0, filterValue.length() - 1)+(Integer.parseInt(last) + 1);
+			sql = sql + "lastLoginDate between '" + filterValue + "' and '" + tomorrow + "' ";
+		} else {
+			sql = sql + filter + "=" + filterValue;
+		}
+		sql = sql + " limit " + start + "," + count;
+		System.out.println(sql);
+		List<Member> members = null;
+		try {
+			members = utils.findMoreRefResult(sql, null, Member.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return members;
+	}
 
 	public static void main(String[] args) {
-		List<Member> members = new MemberDAOImpl().queryAll();
+		List<Member> members = new MemberDAOImpl().list();
 		members.forEach(member -> {
 			System.out.println(member);
 		});

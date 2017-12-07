@@ -49,7 +49,7 @@ public class ComputerDAOImpl implements IComputerDAO {
 	}
 
 	@Override
-	public List<Computer> findAll() {
+	public List<Computer> list() {
 		String sql = "select * from " + Computer.class.getSimpleName();
 		List<Computer> computers = null;
 		try {
@@ -63,7 +63,41 @@ public class ComputerDAOImpl implements IComputerDAO {
 		}
 		return computers;
 	}
-
+	
+	
+	@Override
+	public List<Computer> list(int start,int count) {
+		String sql = "select * from " + Computer.class.getSimpleName()+" limit "+start+","+count;
+		List<Computer> computers = null;
+		try {
+			computers =  utils.findMoreRefResult(sql, null, Computer.class);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computers;
+	}
+	
+	@Override
+	public List<Computer> listAvailable(int start,int count) {
+		String sql = "select * from " + Computer.class.getSimpleName()+"limit "+start+","+count;
+		List<Computer> computers = null;
+		try {
+			computers =  utils.findMoreRefResult(sql, null, Computer.class);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computers;
+	}
+	
+	
 	@Override
 	public boolean updateStatus(long computerNo, String status) {
 		String sql = "update " + Computer.class.getSimpleName() + " set status='"+status+"' where computerNo="+computerNo;

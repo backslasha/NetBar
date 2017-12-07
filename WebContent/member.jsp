@@ -1,3 +1,5 @@
+<%@page import="java.math.BigDecimal"%>
+<%@page import="com.utils.Counter"%>
 <%@page import="com.bean.Computer"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -10,6 +12,7 @@
 	href="static/senmantic/semantic.min.css">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Refresh" content="1800">
 <title>Member</title>
 </head>
 <%
@@ -24,6 +27,9 @@
 		return;
 	}
 	long loginTime = member.getLastLoginDate().getTime();
+	long millseconds = Calendar.getInstance().getTimeInMillis() - member.getLastLoginDate().getTime();
+	int minutes =(int) Math.ceil(millseconds/1000f/60f);
+	BigDecimal expense = Counter.expense(minutes);
 %>
 <body style="background-image: url(images/background.jpg)">
 	<center>
@@ -31,54 +37,91 @@
 		<%=request.getSession().getId()%>
 
 		<div class='ui segment' style="margin-top: 7%; width: 40%;">
-			<h2 class="ui header">
-				Welcome
-				<%=member.getName()%>，假装你正在电脑（编号：<%=computer.getComputerNo()%>)上网
+			<h2 class="ui header" style="color: gray;">
+				<span style="color: black;text-decoration: underline;"><%=member.getName()%></span> 正在电脑（编号：<span style="color: black;text-decoration: underline;"><%=computer.getComputerNo()%></span>)上网
 			</h2>
 			<table border='1' class='ui table'>
 				<tr>
-					<td>Account</td>
+					<td>会员帐号</td>
 					<td><%=member.getMemberNo()%></td>
 				</tr>
 				<tr>
-					<td>Name</td>
+					<td>姓名</td>
 					<td><%=member.getName()%></td>
 				</tr>
 				<tr>
-					<td>Gender</td>
+					<td>性别</td>
 					<td><%=member.getGender()%></td>
 				</tr>
 				<tr>
-					<td>Age</td>
+					<td>年龄</td>
 					<td><%=member.getAge()%></td>
 				</tr>
 				<tr>
-					<td>Funds</td>
-					<td><%=member.getFunds()%></td>
+					<td>账户余额</td>
+					<td  id='funds_td'><%=member.getFunds().subtract(expense)%></td>
 				</tr>
 				<tr>
-					<td>LoginTime</td>
+					<td>开机时间</td>
 					<td><%=new SimpleDateFormat().format(member.getLastLoginDate())%></td>
 				</tr>
 				<tr>
-					<td>Duration</td>
-					<td id="duration_td"></td>
+					<td>使用时长</td>
+					<td id="duration_td">00:00:00</td>
+				</tr>
+				<tr>
+					<td>已产生费用</td>
+					<td id="expense_td"><%=expense %> 元</td>
 				</tr>
 			</table>
 			<form action="logout.do">
 				<input type="hidden" name='userType' value="member" /> 
 				<input type="hidden" name='memberNo' value="<%=member.getMemberNo()%>"/>
 				<input type="hidden" name='computerNo' value="<%=computer.getComputerNo()%>"/>
-				<input type="submit" value="结帐下机" class="ui button" style="float: right;" />
+				<input type="submit" value="结帐下机" onclick="logout()" class="ui button" style="float: right;" />
 			</form>
 			<form action="logout.do">
-				<input type="hidden" name='userType' value="member" /> <input
-					type="submit" name="updatePassword" value="修改密码" class="ui button"
+				<input type="hidden" readonly="readonly" name='userType' value="member" /> 
+				<input type="submit" name="updatePassword" value="修改密码" class="ui button" disabled="disabled"
 					style="float: right;" />
 			</form>
 		</div>
 	</center>
 </body>
+
+<script type="text/javascript">
+	function logout(){
+		var now = new Date().getTime();
+		var logintime =<%=member.getLastLoginDate().getTime() + ""%>;
+		var duration = now - logintime;
+		var temp = duration;
+		var hours = parseInt(temp / 1000 / 60 / 60);
+		temp = temp%(1000*60*60);
+		var minutes = parseInt(temp / 1000 / 60);
+		temp = temp%(1000*60);
+		var seconds = parseInt(temp / 1000);
+		
+		if(hours<=9){  
+			hours = "0".concat(hours);
+		}
+		if(minutes<=9){
+			minutes = "0".concat(minutes);
+		}
+		if(seconds<=9){
+			seconds = "0".concat(seconds);
+		}
+		var expense = hours*3;
+		if(minutes>30){
+			expense=expense+3;
+		}else if(minutes>0){
+			expense=expense+1.5;
+		}
+		if(expense==0){
+			expense=1.5;
+		}
+		window.alert("结帐成功！本次上机时间为 "+hours+":"+minutes+":"+seconds+",共花费 "+expense+"软妹币！");
+	}
+</script>
 
 <script type="text/javascript">
 	var now = new Date().getTime();
@@ -103,6 +146,10 @@
 			seconds = "0".concat(seconds);
 		}
 		durationTd.innerHTML = hours+":"+minutes+":"+seconds;
+
+		if(minutes%30==0&&seconds==0){
+			location.reload(); 
+		}
 		duration = duration + 1000;
 	}
 	setInterval(flushDuration,1000);

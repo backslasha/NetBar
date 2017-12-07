@@ -8,13 +8,13 @@ public class Consumption {
 	long consumptionNo;
 	long computerNo;
 	long memberNo;
-	Timestamp timelogin;
+	Timestamp timeLogin;
 	Timestamp timeLogout;
 	BigDecimal cost;
 	@Override
 	public String toString() {
 		return "Consumption [consumptionNo=" + consumptionNo + ", computerNo=" + computerNo + ", memberNo=" + memberNo
-				+ ", timelogin=" + timelogin + ", timeLogout=" + timeLogout + ", cost=" + cost + "]";
+				+ ", timelogin=" + timeLogin + ", timeLogout=" + timeLogout + ", cost=" + cost + "]";
 	}
 	public long getConsumptionNo() {
 		return consumptionNo;
@@ -35,10 +35,10 @@ public class Consumption {
 		this.memberNo = memberNo;
 	}
 	public Date getTimelogin() {
-		return timelogin;
+		return timeLogin;
 	}
 	public void setTimelogin(Timestamp timelogin) {
-		this.timelogin = timelogin;
+		this.timeLogin = timelogin;
 	}
 	public Date getTimeLogout() {
 		return timeLogout;
