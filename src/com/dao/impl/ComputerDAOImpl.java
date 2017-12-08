@@ -7,6 +7,7 @@ import java.util.List;
 import com.bean.Boss;
 import com.bean.Computer;
 import com.bean.Manager;
+import com.dao.DAOHelper;
 import com.dao.IBossDAO;
 import com.dao.IComputerDAO;
 import com.utils.JDBCUtils;
@@ -68,6 +69,22 @@ public class ComputerDAOImpl implements IComputerDAO {
 	@Override
 	public List<Computer> list(int start,int count) {
 		String sql = "select * from " + Computer.class.getSimpleName()+" limit "+start+","+count;
+		List<Computer> computers = null;
+		try {
+			computers =  utils.findMoreRefResult(sql, null, Computer.class);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computers;
+	}
+	
+	@Override
+	public List<Computer> list(int start,int count,String filter,String filterValue) {
+		String sql = DAOHelper.generateSql(Computer.class.getSimpleName(), filter, filterValue, "none", start, count);
 		List<Computer> computers = null;
 		try {
 			computers =  utils.findMoreRefResult(sql, null, Computer.class);

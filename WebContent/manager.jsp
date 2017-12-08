@@ -92,7 +92,7 @@ form, button {
 		</div>
 
 		<div style="display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		<div id='container' class='ui segment content' style="float: left;min-width: 540px">
+		<div id='container' class='ui segment content' style="float: left;min-width: 640px">
 		</div>
 
 	</div>

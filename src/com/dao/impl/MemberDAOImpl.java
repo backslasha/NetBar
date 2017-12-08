@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bean.Member;
+import com.dao.DAOHelper;
 import com.dao.IMemberDAO;
 import com.utils.JDBCUtils;
 
@@ -57,18 +58,11 @@ public class MemberDAOImpl implements IMemberDAO {
 		}
 		return members;
 	}
+	
+	
 	@Override
 	public List<Member> list(int start,int count, String filter, String filterValue) {
-		String sql = "select * from Member where ";
-		if (filter.equals("date")) {
-			String last = filterValue.charAt(filterValue.length()-1)+"";
-			String tomorrow =  filterValue.substring(0, filterValue.length() - 1)+(Integer.parseInt(last) + 1);
-			sql = sql + "lastLoginDate between '" + filterValue + "' and '" + tomorrow + "' ";
-		} else {
-			sql = sql + filter + "=" + filterValue;
-		}
-		sql = sql + " limit " + start + "," + count;
-		System.out.println(sql);
+		String sql = DAOHelper.generateSql(Member.class.getSimpleName(), filter, filterValue, "lastLoginDate", start, count);
 		List<Member> members = null;
 		try {
 			members = utils.findMoreRefResult(sql, null, Member.class);
@@ -79,12 +73,6 @@ public class MemberDAOImpl implements IMemberDAO {
 		return members;
 	}
 
-	public static void main(String[] args) {
-		List<Member> members = new MemberDAOImpl().list();
-		members.forEach(member -> {
-			System.out.println(member);
-		});
-	}
 
 	@Override
 	public boolean add(Member member) {

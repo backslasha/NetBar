@@ -11,4 +11,5 @@ public interface IComputerDAO {
 	boolean updateStatus(long computerNo,String status);
 	List<Computer> listAvailable(int start,int count);
 	List<Computer> list(int start,int count);
+	List<Computer> list(int start,int count,String filter,String filterValue);
 }

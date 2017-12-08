@@ -20,11 +20,6 @@ $(document).ready(function() {
 
 });
 
-/*  consumptionPanel */
-function consumptionPanel(){
-	//ConsumptionNo | computerNo | memberNo   | timeLogin  | timeLogout | cost
-	
-}
 
 
 /*  获取并解析管理员信息  */
@@ -53,19 +48,17 @@ function managerMessage(managerNo){
 
 /* 获取并解析『电脑概况 』 */
 function computerStatus(start,count){
-	var end =parseInt(start)+parseInt(count);
-	var url = "computerStatus.ajax?start="+start+"&&end="+count;
+	var tbody = resetContainer();
 	
-//	var formMap = $("#filterPanel").serializeArray();
-//	// 是否需要添加过滤参数
-//	if(formMap&&formMap.length!=0&&formMap[0].value!="none"){
-//		url = url+"&&filter="+formMap[0].value+"&&filterValue="+formMap[1].value;
-//	}
+	addFilterBar(container,computerStatus,{
+		"status":"电脑状态",
+		"computerNo":"电脑编号",
+		"none":"不过滤"
+	});
+	
+	var url = paramify("computerStatus",start,count);
+
 	$.getJSON(url,function(data) {
-		 			var container = $("#container");
-		 			container.html("<table class='ui table' border='1' style='margin: 0;'><tbody></tbody></table>");
-		 			container.css("margin","0");
-	            var tbody = container.find("tbody")[0];
 	            var records = data.computers;
 	            addHeaders(tbody,records[0]);
 	            $.each(records,
@@ -83,26 +76,18 @@ function computerStatus(start,count){
 
 	                tbody.append(tr);
 	            	});
-	            // addFilterBar(container,computerStatus);
+	            var end =parseInt(start)+parseInt(count);
 	            addButtonBar(container,parseInt(end/7),"computerStatus");
-	            if(window.containerContent!="computerStatus"){
-						$("#container").hide().show("fast");
-						window.containerContent="computerStatus";					
-					}
+	            setCurrentContent("computerStatus");
+	          
 	  });
 }
 
-/* 获取并解析『电脑使用记录』，支持过滤*/
+/* 获取并解析『电脑使用记录』,支持过滤*/
 function computerUses(start,count){
 	var end =parseInt(start)+parseInt(count);
 	var url = "uses.ajax?start="+start+"&&end="+count;
-	
-//	var formMap = $("#filterPanel").serializeArray();
-//	// 是否需要添加过滤参数
-//	if(formMap&&formMap.length!=0&&formMap[0].value!="none"){
-//		url = url+"&&filter="+formMap[0].value+"&&filterValue="+formMap[1].value;
-//	}
-	
+
 	$.getJSON(url,function(data) {
 		 			var container = $("#container");
 		 			container.html("<table class='ui table' border='1' style='margin: 0;'><tbody></tbody></table>");
@@ -125,31 +110,26 @@ function computerUses(start,count){
 
 	                tbody.append(tr);
 	            	});
-//	            addFilterBar(container,computerUses);
+	            setCurrentContent("computerUses");	
 	            addButtonBar(container,parseInt(end/7),"computerUses");
-	            if(window.containerContent!="computerUses"){
-						$("#container").hide().show("fast");
-						window.containerContent="computerUses";					
-					}
+	            
 	  });
 }
 
-/* 获取并解『析吧内会员信息』，支持过滤*/
+/* 获取并解『析吧内会员信息』,支持过滤*/
 function members(start,count){
-	var end =parseInt(start)+parseInt(count);
-	var url = "members.ajax?start="+start+"&&end="+count;
+
+	var tbody = resetContainer();
 	
-	var formMap = $("#filterPanel").serializeArray();
-	// 是否需要添加过滤参数
-	if(formMap&&formMap.length!=0&&formMap[0].value!="none"){
-		url = url+"&&filter="+formMap[0].value+"&&filterValue="+formMap[1].value;
-	}
+	addFilterBar(container,consumptions,{
+		"memberNo":"会员帐号",
+		"lastLoginDate":"最近登陆",
+		"none":"不过滤"
+	});
 	
+	var url = paramify("members",start,count);
+
 	$.getJSON(url,function(data) {
-		var container = $("#container");
-		container.html("<table class='ui table' border='1' style='margin: 0;min'><tbody></tbody></table>");
-		container.css("margin","0");
-		var tbody = container.find("tbody")[0];
 		var records = data.records;
 		addHeaders(tbody,records[0]);
 		$.each(records,
@@ -167,31 +147,28 @@ function members(start,count){
 			
 			tbody.append(tr);
 		});
-		addFilterBar(container,members);
+		var end =parseInt(start)+parseInt(count);
 		addButtonBar(container,parseInt(end/7),"members");
-		if(window.containerContent!="members"){
-			$("#container").hide().show("fast");
-			window.containerContent="members";					
-		}
+		setCurrentContent("members");
+		
 	});
 }
 
-/* 获取并解析『消费记录信息』，支持过滤*/
+/* 获取并解析『消费记录信息』,支持过滤*/
 function consumptions(start,count){
-	var end =parseInt(start)+parseInt(count);
-	var url = "consumptions.ajax?start="+start+"&&end="+count;
 	
-	var formMap = $("#filterPanel").serializeArray();
-	// 是否需要添加过滤参数
-	if(formMap&&formMap.length!=0&&formMap[0].value!="none"){
-		url = url+"&&filter="+formMap[0].value+"&&filterValue="+formMap[1].value;
-	}
+	var tbody = resetContainer();
+	
+	addFilterBar(container,consumptions,{
+			"memberNo":"会员帐号",
+			"computerNo":"电脑编号",
+			"timeLogin":"最近登陆",
+			"none":"不过滤"
+	});
+	
+	var url = paramify("consumptions",start,count);
 	
 	$.getJSON(url,function(data) {
-		var container = $("#container");
-		container.html("<table class='ui table' border='1' style='margin: 0;min'><tbody></tbody></table>");
-		container.css("margin","0");
-		var tbody = container.find("tbody")[0];
 		var records = data.consumptions;
 		addHeaders(tbody,records[0]);
 		$.each(records,
@@ -208,16 +185,42 @@ function consumptions(start,count){
 			}
 			
 			tbody.append(tr);
+	
 		});
-		addFilterBar(container,consumptions);
+		var end =parseInt(start)+parseInt(count);
 		addButtonBar(container,parseInt(end/7),"consumptions");
-		if(window.containerContent!="consumptions"){
-			$("#container").hide().show("fast");
-			window.containerContent="consumptions";					
-		}
+		setCurrentContent("consumptions");
 	});
 }
 
+function resetContainer(){
+	var container = $("#container");
+	container.html("<table class='ui table' border='1' style='margin: 0;'><tbody></tbody></table>");
+	container.css("margin","0");
+	return container.find("tbody")[0];
+}
+
+function paramify(action,start,count) {
+	var url = action+".ajax?start="+start+"&&end="+count;
+	
+	var $checkRadio = $($("#filterPanel :checked")[0]);
+	var $text =  $($("#filterPanel :text")[0]);
+	if(!$checkRadio){
+		return url;
+	}
+	// 是否需要添加过滤参数
+	if($checkRadio.val()!="none"&&$text.val()){
+		url = url+"&&filter="+$checkRadio.val()+"&&filterValue="+$text.val();
+	}
+	return url;
+}
+
+function setCurrentContent(content){
+	  if(window.containerContent!=content){
+			$("#container").hide().show("fast");
+			window.containerContent=content;					
+	 }
+}
 function addHeaders(tbody, record){	
 	 	var tr = document.createElement("tr");
 	 	var td = document.createElement("td");
@@ -243,43 +246,61 @@ function addButtonBar(container,pageNo,methodName){
 	container.append(div);
 }
 
-function addFilterBar(container,method){
+
+
+function addFilterBar(container,method,options){
 	var div = document.createElement("div");
 	div.innerHTML="<form id=\"filterPanel\" class=\"ui segment\" style='margin-top: unset !important;'>\n" + 
-	"	<input type=\"radio\" name=\"filter\" value=\"memberNo\" >会员帐号</input>\n" + 
-	"	<input type=\"radio\" name=\"filter\" value=\"computerNo\" >电脑编号</input>\n" + 
-	"	<input type=\"radio\" name=\"filter\" value=\"date\" >日期</input>\n" + 
-	"	<input type=\"radio\" name=\"filter\" value=\"none\" checked=\"checked\">无</input>\n" + 
 	"	<input type=\"submit\" value=\"过滤\" style=\"float:right\"/>\n" + 
 	"	<input type=\"text\" name=\"filterValue\" style=\"float:right\" />\n" + 
 	"	<div class=\"ui right pointing label\" style=\"float:right\">过滤值</div>\n" + 
 	"</form>"
+	// 新增加表单 div
 	container.prepend(div);
 	
-	if(window.filter){
-		var text;
-		var radio = $("#filterPanel input")
-									.filter(function(index){
-										if($(this).attr("name")=="filterValue"){
-											text = $(this);
-										}
-										return $(this).val()==window.filter;
-									})[0];
-		$(radio).attr("checked",true);
+	// 表单添加需要的 radio 
+	var $filterPanel = $("#filterPanel");
+	for(var key in options){
+		var value = key;
+		var name = "filter";
+		var text = options[key];
 		
-		if(window.filterValue){
-			text.val(window.filterValue);
+		var radio = document.createElement("input");
+		radio.setAttribute('type',"radio");
+		radio.setAttribute('name',name);
+		radio.setAttribute('value',value);
+		radio.setAttribute('id',"radio_"+value);
+		if(key=="none"){
+			radio.setAttribute('checked',true);
+		}
+		
+		var label = document.createElement("label");
+		label.setAttribute('for',"radio_"+value);
+		label.innerText=text;
+		
+		$filterPanel.append(radio,label);
+	}
+	
+	// 如果之前有选中的 radio，并且此时那个 radio 还在，则恢复它的选中状态
+	var $checkRadio = $("#"+window.checkRadioId);
+	if($checkRadio){
+		$checkRadio.attr("checked",true);
+
+		// 如果之前有输入的字符串，则恢复它
+		if(window.preservedText){
+			var $text = $($("#filterPanel :text")[0]);
+			$text.val(window.preservedText);
 		}
 	}
 	
+	// 使用过滤时，记录此时的 radio 的 ID，和 text 中的文本，以便表单重建时恢复它们的状态
 	$("#filterPanel").submit(function(event){
 		event.preventDefault();
+		var $radio = $($("#filterPanel :checked")[0]);
+		var $text = $($("#filterPanel :text")[0]);
+		window.checkRadioId=$radio.attr("id");
+		window.preservedText=$text.val();
 		method(0,7);
-		var formMap = $("#filterPanel").serializeArray();
-		if(formMap&&formMap.length!=0){
-			window.filter=formMap[0].value;
-			window.filterValue=formMap[1].value
-		}
 	});
 }
 
