@@ -11,13 +11,34 @@
 <html>
 <link rel="stylesheet" type="text/css"
 	href="static/senmantic/semantic.min.css">
-	
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Manager</title>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-<script src="js/manager.js"></script>
+<title>网吧管理员</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		window.containerContent="managerMessage";
+	     $(".menu").mouseenter(function() {
+	        $(this).animate({	
+	            height: '+=10px',
+	            width: '+=10px'
+	        },
+	        100);
+	    }).mouseout(function() {
+	        $(this).animate({
+	            height: '-=10px',
+	            width: '-=10px'
+	        },
+	        100);
+	    }).click(function(){
+	    	$(".pin").removeClass("pin").addClass("menu");
+			$(this).removeClass("menu").addClass("pin");
+	     });
+	});
+</script>
+<script src="js/mains.js"></script>
+<script src="js/middle.js"></script>
 
 <style type="text/css">
 body {
@@ -26,7 +47,7 @@ body {
 
 form, button {
 	margin: 4px !important;
-	padding: 10px ;
+	padding: 10px;
 }
 
 .main {
@@ -44,7 +65,9 @@ form, button {
 .buttonPanel {
 	clear: both;
 	margin-right: 36px;
-	float: left; width : 16%; height : 60%;
+	float: left;
+	width: 16%;
+	height: 60%;
 	float: left;
 	width: 16%;
 	height: 60%;
@@ -58,45 +81,42 @@ form, button {
 </style>
 </head>
 
-	<div class="main">
+<div class="main">
 
-		<h2 class="ui segment header" style="color: gray; line-height: 0">
-			管理员 <span style="color: black; text-decoration: underline;"><%=manager.getName()%></span>
-			正在值班
-		</h2>
+	<h2 class="ui segment header" style="color: gray; line-height: 0">
+		管理员 <span style="color: black; text-decoration: underline;"><%=manager.getName()%></span>
+		正在值班
+	</h2>
 
-		<div class='ui segment buttonPanel'>
-			<button class="ui button menu" 
-				style="display: inline" onclick="managerMessage(<%=manager.getManagerNo()%>)">值班人员</button>
-				
-			<button class="ui button menu" 
-				style="display: inline" onclick="computerStatus(0,7)">电脑概况</button>
-				
-			<button class="ui button menu"
-				style="display: inline" onclick="members(0,7)">会员信息</button>
+	<div class='ui segment buttonPanel'>
+		<button class="ui button menu" style="display: inline"
+			onclick="managerMessage(<%=manager.getManagerNo()%>)">值班人员</button>
 
-			<button class="ui button menu"
-				style="display: inline" onclick="consumptions(0,7)">消费记录</button>
-			
-			<button class="ui button menu" 
-				style="display: inline" onclick="computerUses(0,7)">使用记录</button>
-			
-			<button class="ui button menu" 
-				style="display: inline" onclick="">损坏记录</button>
+		<button class="ui button menu" style="display: inline"
+			onclick="computerStatus(0,7)">电脑概况</button>
 
-			<button class="ui button menu"
-				style="display: inline" onclick="">管理中心</button>
+		<button class="ui button menu" style="display: inline"
+			onclick="members(0,7)">会员信息</button>
 
-			<button class="ui button menu" 
-				style="display: inline" onclick="">登出</button>
+		<button class="ui button menu" style="display: inline"
+			onclick="consumptions(0,7)">消费记录</button>
 
-		</div>
+		<button class="ui button menu" style="display: inline"
+			onclick="computerUses(0,7)">使用记录</button>
 
-		<div style="display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		<div id='container' class='ui segment content' style="float: left;min-width: 640px">
-		</div>
+		<button class="ui button menu" style="display: inline" onclick="">损坏记录</button>
+
+		<button class="ui button menu" style="display: inline" onclick="">管理中心</button>
+
+		<button class="ui button menu" style="display: inline" onclick="">登出</button>
 
 	</div>
+
+	<div style="display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+	<div id='container' class='ui segment content'
+		style="float: left; min-width: 640px"></div>
+
+</div>
 </body>
 <script type="text/javascript">
 	managerMessage(<%=manager.getManagerNo()%>);

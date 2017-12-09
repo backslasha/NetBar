@@ -18,22 +18,6 @@ public class ComputerUsesAction implements Action {
 
 	@Override
 	public String ajax(HttpServletRequest request, HttpServletResponse response) {
-String s = "<td style=\"\n" + 
-"    padding: unset;\n" + 
-"\">\n" + 
-"    <form class=\"ui form control\" style=\"\n" + 
-"    padding: unset !important;\n" + 
-"\">\n" + 
-"        <select class=\"ui form-control inline\" style=\"width: auto;color: red;display: inline;\">			<option>正在使用</option>\n" + 
-"    	    <option>空闲</option>\n" + 
-"        	<option>待维修</option>\n" + 
-"    	</select>\n" + 
-"    	<input type=\"button\" style=\"\n" + 
-"    display: inline;\n" + 
-"    padding: 5px;\n" + 
-"\" class=\"ui button\" value=\"确定\">\n" + 
-"    </form>\n" + 
-"</td>";
 		ComputerUsesDAOImpl dao = new ComputerUsesDAOImpl();
 		
 		String start = request.getParameter("start");

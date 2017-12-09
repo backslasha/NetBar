@@ -13,12 +13,44 @@ import com.google.gson.JsonObject;
 
 public class ComputerStatusAction implements Action {
 	private static final String EMPTY_RESULT = "{records:[]}";
+	private static final String UPDATE_FAIL = "更新失败！";
 
 	@Override
 	public String ajax(HttpServletRequest request, HttpServletResponse response) {
+		String type = request.getParameter("type");
+		switch(type) {
+		case "query":
+			return handleQuery(request,response);
+		case "update":
+			return handleUpdate(request,response);
+		default :
+			return EMPTY_RESULT;
+		}
+	}
+	
+	
+
+	private String handleUpdate(HttpServletRequest request, HttpServletResponse response) {
+		ComputerDAOImpl dao = new ComputerDAOImpl();
+		String colomnName= request.getParameter("columnName");
+		if(colomnName.equals("comment")) {
+			return UPDATE_FAIL;
+		}else if(colomnName.equals("status")) {
+			String value = request.getParameter(colomnName);
+			String computerNo = request.getParameter("computerNo");
+			if(dao.updateStatus(Long.parseLong(computerNo), value)) {
+				return "{\"result\":\""+value+"\"}";
+			}
+			return UPDATE_FAIL;
+		}
+		return UPDATE_FAIL;
+	}
+
+
+
+	private String handleQuery(HttpServletRequest request, HttpServletResponse response) {
 		ComputerDAOImpl dao = new ComputerDAOImpl();
 		List<Computer> computers;
-
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
 
@@ -65,7 +97,10 @@ public class ComputerStatusAction implements Action {
 
 		return jsonObjectRoot.toString();
 
+
 	}
+
+
 
 	private String toChinese(String status) {
 		if (status.equals("idle")) {

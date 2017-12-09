@@ -9,6 +9,7 @@ public interface IComputerDAO {
 	Computer findAvailable();
 	List<Computer> list();
 	boolean updateStatus(long computerNo,String status);
+	boolean updateComment(long computerNo,String comment);
 	List<Computer> listAvailable(int start,int count);
 	List<Computer> list(int start,int count);
 	List<Computer> list(int start,int count,String filter,String filterValue);

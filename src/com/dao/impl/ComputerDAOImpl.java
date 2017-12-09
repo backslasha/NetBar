@@ -65,7 +65,6 @@ public class ComputerDAOImpl implements IComputerDAO {
 		return computers;
 	}
 	
-	
 	@Override
 	public List<Computer> list(int start,int count) {
 		String sql = "select * from " + Computer.class.getSimpleName()+" limit "+start+","+count;
@@ -97,7 +96,7 @@ public class ComputerDAOImpl implements IComputerDAO {
 		}
 		return computers;
 	}
-	
+	 
 	@Override
 	public List<Computer> listAvailable(int start,int count) {
 		String sql = "select * from " + Computer.class.getSimpleName()+"limit "+start+","+count;
@@ -114,10 +113,21 @@ public class ComputerDAOImpl implements IComputerDAO {
 		return computers;
 	}
 	
-	
 	@Override
 	public boolean updateStatus(long computerNo, String status) {
 		String sql = "update " + Computer.class.getSimpleName() + " set status='"+status+"' where computerNo="+computerNo;
+		try {
+			return utils.updateByPreparedStatement(sql, null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateComment(long computerNo, String comment) {
+		String sql = "update " + Computer.class.getSimpleName() + " set comment='"+comment+"' where computerNo="+computerNo;
 		try {
 			return utils.updateByPreparedStatement(sql, null);
 		} catch (SQLException e) {
