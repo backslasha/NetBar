@@ -56,7 +56,7 @@ public class ComputerUsesAction implements Action {
 			jsonObject.addProperty("登陆时间",df.format(record.getTimeLogin()));
 			jsonArrayRoot.add(jsonObject);
 		});
-		jsonObjectRoot.add("records", jsonArrayRoot);
+		jsonObjectRoot.add("computerUses", jsonArrayRoot);
 		return jsonObjectRoot.toString();
 	}
 

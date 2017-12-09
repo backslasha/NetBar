@@ -30,6 +30,7 @@ public class AjaxServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-type", "json/application;charset=UTF-8");  
 		response.setCharacterEncoding("UTF-8");
 		handleAction(request, response);

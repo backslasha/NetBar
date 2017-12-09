@@ -58,100 +58,103 @@ function computerStatus(start,count){
 	
 	var url = paramify("computerStatus",start,count);
 
-	$.getJSON(url,function(data) {
-	            var records = data.computers;
-	            addHeaders(tbody,records[0]);
-	            $.each(records,
-	            function(i, record) {
-	                var tr = document.createElement("tr");
-	                var td = document.createElement("td");
-	                td.innerHTML = i+1;
-	                tr.append(td);
-
-	                for(var key in record){
-	        	 			var td = document.createElement("td");
-	        	 			td.innerHTML = record[key];
-	        	 			tr.append(td);
-	                     }
-
-	                tbody.append(tr);
-	            	});
-	            var end =parseInt(start)+parseInt(count);
-	            addButtonBar(container,parseInt(end/7),"computerStatus");
-	            setCurrentContent("computerStatus");
-	          
-	  });
+	// ajax 成功响应处理函数
+	var successHandler = function(data){
+		tbodyGenerate(tbody,data.computerStatus);
+		var end =parseInt(start)+parseInt(count);
+		addButtonBar(container,parseInt(end/7),"computerStatus");
+		setCurrentContent("computerStatus");
+	}
+	
+	// ajax 失败响应处理函数
+	var failHandler = function(jqxhr){
+			alert(jqxhr.responseText);
+			computerStatus(0,7);
+	}
+	
+	// 发送 ajax 请求
+	var jqxhr = $.ajax({
+		url:url,
+		dataType: "json"
+	});
+	
+	jqxhr.done(successHandler);
+	jqxhr.fail(failHandler);
 }
 
 /* 获取并解析『电脑使用记录』,支持过滤*/
 function computerUses(start,count){
-	var end =parseInt(start)+parseInt(count);
-	var url = "uses.ajax?start="+start+"&&end="+count;
 
-	$.getJSON(url,function(data) {
-		 			var container = $("#container");
-		 			container.html("<table class='ui table' border='1' style='margin: 0;'><tbody></tbody></table>");
-	        		container.css("margin","0");
-	            var tbody = container.find("tbody")[0];
-	            var records = data.records;
-	            addHeaders(tbody,records[0]);
-	            $.each(records,
-	            function(i, record) {
-	                var tr = document.createElement("tr");
-	                var td = document.createElement("td");
-	                td.innerHTML = i+1;
-	                tr.append(td);
-
-	                for(var key in record){
-	        	 			var td = document.createElement("td");
-	        	 			td.innerHTML = record[key];
-	        	 			tr.append(td);
-	                     }
-
-	                tbody.append(tr);
-	            	});
-	            setCurrentContent("computerUses");	
-	            addButtonBar(container,parseInt(end/7),"computerUses");
-	            
-	  });
+	// 重置 container 表格为空，获取到它的 tbody
+	var tbody = resetContainer();
+	
+	//根据请求数据类型 拼接 ajax 请求的 url
+	var url = paramify("uses",start,count);
+	
+	// ajax 成功响应处理函数
+	var successHandler = function(data){
+		tbodyGenerate(tbody,data.computerUses);
+		var end =parseInt(start)+parseInt(count);
+		addButtonBar(container,parseInt(end/7),"computerUses");
+		setCurrentContent("computerUses");
+	}
+	
+	// ajax 失败响应处理函数
+	var failHandler = function(jqxhr){
+			alert(jqxhr.responseText);
+			computerUses(0,7);
+	}
+	
+	// 发送 ajax 请求
+	var jqxhr = $.ajax({
+		url:url,
+		dataType: "json"
+	});
+	
+	jqxhr.done(successHandler);
+	jqxhr.fail(failHandler);
 }
 
 /* 获取并解『析吧内会员信息』,支持过滤*/
 function members(start,count){
 
+	// 重置 container 表格为空，获取到它的 tbody
 	var tbody = resetContainer();
 	
-	addFilterBar(container,consumptions,{
+	// 添加过滤条
+	addFilterBar(container,members,{
 		"memberNo":"会员帐号",
 		"lastLoginDate":"最近登陆",
 		"none":"不过滤"
 	});
 	
+	//根据请求数据类型 拼接 ajax 请求的 url
 	var url = paramify("members",start,count);
 
-	$.getJSON(url,function(data) {
-		var records = data.records;
-		addHeaders(tbody,records[0]);
-		$.each(records,
-				function(i, record) {
-			var tr = document.createElement("tr");
-			var td = document.createElement("td");
-			td.innerHTML = i+1;
-			tr.append(td);
-			
-			for(var key in record){
-				var td = document.createElement("td");
-				td.innerHTML = record[key];
-				tr.append(td);
-			}
-			
-			tbody.append(tr);
-		});
+	
+	// ajax 成功响应处理函数
+	var successHandler = function(data){
+		tbodyGenerate(tbody,data.members);
 		var end =parseInt(start)+parseInt(count);
 		addButtonBar(container,parseInt(end/7),"members");
 		setCurrentContent("members");
-		
+	}
+	
+	// ajax 失败响应处理函数
+	var failHandler = function(jqxhr){
+			alert(jqxhr.responseText);
+			members(0,7);
+	}
+	
+	// 发送 ajax 请求
+	var jqxhr = $.ajax({
+		url:url,
+		dataType: "json"
 	});
+	
+	jqxhr.done(successHandler);
+	jqxhr.fail(failHandler);
+	
 }
 
 /* 获取并解析『消费记录信息』,支持过滤*/
@@ -168,28 +171,47 @@ function consumptions(start,count){
 	
 	var url = paramify("consumptions",start,count);
 	
-	$.getJSON(url,function(data) {
-		var records = data.consumptions;
-		addHeaders(tbody,records[0]);
-		$.each(records,
-				function(i, record) {
-			var tr = document.createElement("tr");
-			var td = document.createElement("td");
-			td.innerHTML = i+1;
-			tr.append(td);
-			
-			for(var key in record){
-				var td = document.createElement("td");
-				td.innerHTML = record[key];
-				tr.append(td);
-			}
-			
-			tbody.append(tr);
-	
-		});
+
+	// ajax 成功响应处理函数
+	var successHandler = function(data){
+		tbodyGenerate(tbody,data.consumptions);
 		var end =parseInt(start)+parseInt(count);
 		addButtonBar(container,parseInt(end/7),"consumptions");
 		setCurrentContent("consumptions");
+	}
+	
+	// ajax 失败响应处理函数
+	var failHandler = function(jqxhr){
+			alert(jqxhr.responseText);
+			members(0,7);
+	}
+	
+	// 发送 ajax 请求
+	var jqxhr = $.ajax({
+		url:url,
+		dataType: "json"
+	});
+	
+	jqxhr.done(successHandler);
+	jqxhr.fail(failHandler);
+	
+}
+
+function tbodyGenerate(tbody,records){
+	addHeaders(tbody,records[0]);
+	$.each(records,function(i, record) {
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		td.innerHTML = i+1;
+		tr.append(td);
+		
+		for(var key in record){
+			var td = document.createElement("td");
+			td.innerHTML = record[key];
+			tr.append(td);
+		}
+		
+		tbody.append(tr);
 	});
 }
 
@@ -221,6 +243,7 @@ function setCurrentContent(content){
 			window.containerContent=content;					
 	 }
 }
+
 function addHeaders(tbody, record){	
 	 	var tr = document.createElement("tr");
 	 	var td = document.createElement("td");
@@ -245,8 +268,6 @@ function addButtonBar(container,pageNo,methodName){
 	"</form>";
 	container.append(div);
 }
-
-
 
 function addFilterBar(container,method,options){
 	var div = document.createElement("div");

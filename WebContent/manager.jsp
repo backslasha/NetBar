@@ -11,6 +11,7 @@
 <html>
 <link rel="stylesheet" type="text/css"
 	href="static/senmantic/semantic.min.css">
+	
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Manager</title>
@@ -56,7 +57,7 @@ form, button {
 }
 </style>
 </head>
-<body>
+
 	<div class="main">
 
 		<h2 class="ui segment header" style="color: gray; line-height: 0">

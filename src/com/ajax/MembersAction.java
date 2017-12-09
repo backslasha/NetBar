@@ -14,7 +14,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class MembersAction implements Action {
-	private static final String EMPTY_RESULT = "{members:[]}";
+	private static final String EMPTY_RESULT = "没有更多数据啦！";
 
 	@Override
 	public String ajax(HttpServletRequest request, HttpServletResponse response) {
@@ -66,7 +66,7 @@ public class MembersAction implements Action {
 			jsonObject.addProperty("最近登陆时间",df.format(member.getLastLoginDate()));
 			jsonArrayRoot.add(jsonObject);
 		});
-		jsonObjectRoot.add("records", jsonArrayRoot);
+		jsonObjectRoot.add("members", jsonArrayRoot);
 		return jsonObjectRoot.toString();
 	}
 

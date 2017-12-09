@@ -61,7 +61,7 @@ public class ComputerStatusAction implements Action {
 			jsonObject.addProperty("备注", computer.getComment());
 			jsonArrayRoot.add(jsonObject);
 		});
-		jsonObjectRoot.add("computers", jsonArrayRoot);
+		jsonObjectRoot.add("computerStatus", jsonArrayRoot);
 
 		return jsonObjectRoot.toString();
 
