@@ -26,7 +26,7 @@ body {
 
 form, button {
 	margin: 4px !important;
-	padding: 10px !important;
+	padding: 10px ;
 }
 
 .main {

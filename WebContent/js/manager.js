@@ -24,26 +24,27 @@ $(document).ready(function() {
 
 /*  获取并解析管理员信息  */
 function managerMessage(managerNo){
-	$.getJSON("managerMessage.ajax?managerNo="+managerNo,
-			function(data) {
-				var container = $("#container");
-				container.html("<table class='ui table' border='1'><tbody></tbody></table>");
-				var tbody = container.find("tbody")[0];
-				for(var key in data){
-					var tr = document.createElement("tr");
-    	 			var td = document.createElement("td");
-    	 			td.innerHTML = key;
-    	 			tr.append(td);
-    	 			var td = document.createElement("td");
-    	 			td.innerHTML = data[key];
-    	 			tr.append(td);
-    	 			tbody.append(tr);
-                 }
-				if(window.containerContent!="managerMessage"){
-					$("#container").hide().show("fast");
-					window.containerContent="managerMessage";					
-				}
-			});
+	
+	var jsxhr = $.ajax({
+		url:"managerMessage.ajax",
+		data:{"managerNo":managerNo},
+		method:"post",
+		dataType:"json"
+	});
+	jsxhr.done(function(data){
+		var tbody = resetContainer();
+		for(var key in data){
+			var tr = document.createElement("tr");
+ 			var td = document.createElement("td");
+ 			td.innerHTML = key;
+ 			tr.append(td);
+ 			var td = document.createElement("td");
+ 			td.innerHTML = data[key];
+ 			tr.append(td);
+ 			tbody.append(tr);
+         }
+		setCurrentContent('managerMessage');
+	})
 }		
 
 /* 获取并解析『电脑概况 』 */
@@ -64,6 +65,93 @@ function computerStatus(start,count){
 		var end =parseInt(start)+parseInt(count);
 		addButtonBar(container,parseInt(end/7),"computerStatus");
 		setCurrentContent("computerStatus");
+		
+		// 使 td 变得可以编辑的函数
+		var editable = function(){
+			var td = this;
+			var oldPadding = this.style.padding;
+			var oldNode = this.firstChild;
+
+			td.dblclick=null;
+			td.style.padding="unset";
+			
+			var options = new Array("正在使用","空闲","待维修");
+			var form = document.createElement("form");
+			form.setAttribute("class","ui form");
+			form.style.padding="0px";
+			
+			var sure = document.createElement("input");
+			sure.style.padding="5px";
+			sure.value="提交";
+			sure.setAttribute("type","button");
+			sure.style.display="inline";
+			sure.style.margin="0 16px";
+			sure.setAttribute("class","ui button");
+			sure.onclick=function(){
+				alert("确认修改！");
+				// to do
+				td.style.color="green";
+				td.style.padding=oldPadding;
+				td.replaceChild(oldNode,form);
+				td.dblclick=editable;
+			}
+
+			var cancel = document.createElement("input");
+			cancel.style.padding="5px";
+			cancel.value="取消";
+			cancel.setAttribute("type","button");
+			cancel.style.display="inline";
+			cancel.style.margin="0 0 0 16px";
+			cancel.setAttribute("class","ui button");
+			cancel.onclick=function(){
+				td.style.padding=oldPadding;
+				td.replaceChild(oldNode,form);
+				td.dblclick=editable;
+			}
+
+			
+			var fillModel = function(options,selected){
+				var i = 0;
+				for(;i<options.length;i++){
+					if(options[i]==selected){
+						break;
+					}
+				}
+				for(var j=0;j<options.length;j++){
+					var option = document.createElement("option");
+					option.innerHTML=options[j];
+					this.add(option,null);
+				}
+				this.selectedIndex=i;
+			};
+			var onSelectChange = function(){
+				if(select.initialOption!=select.value){
+					select.style.color="red";
+					form.appendChild(sure);
+				}else{
+					select.style.color="black";
+					form.removeChild(sure);
+				}
+			}
+			var select = document.createElement("select");
+			select.style.display="inline";
+			select.style.width="auto";
+			select.fillModel = fillModel;
+			select.fillModel(options,oldNode.textContent);
+			select.initialOption=oldNode.textContent;
+			select.setAttribute("class","ui form-control");
+			select.onchange=onSelectChange;
+			
+			form.appendChild(select);
+			form.appendChild(cancel);
+			
+			td.replaceChild(form,oldNode);
+		};
+		
+		// 所有 '电脑状态' 的格子（表头行除外），双击时变成可编辑状态
+		var index = $("td:contains('电脑状态')").prevAll().length+1;
+		$("tr :nth-child("+index+"):not(.row_head)").dblclick(editable);
+		
 	}
 	
 	// ajax 失败响应处理函数
@@ -252,6 +340,7 @@ function addHeaders(tbody, record){
 	   
 	 	for(var key in record){
 	 		var td = document.createElement("td");
+	 		td.setAttribute("class","row_head");
 	 		td.innerHTML = key;
 	 	   tr.append(td);
 	 	}
