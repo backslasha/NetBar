@@ -157,6 +157,19 @@ public class MemberDAOImpl implements IMemberDAO {
 		}
 		return false;
 	}
+	@Override
+	public boolean updateGender(long memberNo, String gender) {
+		// TODO Auto-generated method stub
+		String sql = "update " + Member.class.getSimpleName() + " set gender='" + gender + "' where memberNo='"
+				+ memberNo + "'";
+		try {
+			return utils.updateByPreparedStatement(sql, null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public boolean updateLastLoginTime(long memberNo) {

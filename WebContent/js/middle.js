@@ -9,8 +9,12 @@ function translate(text){
 			return "idle";
 		case "待维修":
 			return "broken";
+		case "男":
+			return "男";
+		case "女":
+			return "女";
 		default:
-			return "nothing";
+			return text;
 		}
 	}else{
 		switch(text){
@@ -21,7 +25,7 @@ function translate(text){
 		case "broken":
 			return "待维修";
 		default:
-			return "无匹配";
+			return text;
 		}
 	}
 	

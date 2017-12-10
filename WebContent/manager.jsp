@@ -15,7 +15,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>网吧管理员</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		window.containerContent="managerMessage";
@@ -37,22 +37,29 @@
 	     });
 	});
 </script>
-<script src="js/mains.js"></script>
-<script src="js/middle.js"></script>
+<script charset="utf-8" src="js/mains.js"></script>
+<script charset="utf-8" src="js/middle.js"></script>
 
 <style type="text/css">
 body {
 	background-image: url(images/background.jpg);
 }
 
-form, button {
-	margin: 4px !important;
-	padding: 10px;
+td{
+    width: 72px;
+    max-width: 20em;  
+    white-space: nowrap;
+    overflow: hidden;
 }
 
+.menu{
+	margin: 4px !important;
+	width:auto  !important;
+	padding: 10px !important;
+}
 .main {
-	width: 920px;
-	margin: 36px auto;
+	width: 1024px;
+	margin: 64px auto;
 	padding: 0 auto;
 	overflow: hidden;
 }
@@ -64,14 +71,12 @@ form, button {
 
 .buttonPanel {
 	clear: both;
-	margin-right: 36px;
 	float: left;
 	width: 16%;
 	height: 60%;
 	float: left;
-	width: 16%;
+	width: 9em;
 	height: 60%;
-	padding: 1% !important;
 }
 
 .content {

@@ -29,6 +29,8 @@ public interface IMemberDAO {
 	
 	boolean updateStatus(long memberNo,String status);
 	
+	boolean updateGender(long memberNo, String gender);
+	
 	boolean updateLastLoginTime(long memberNo);
 
 	boolean updatePassword(String password);

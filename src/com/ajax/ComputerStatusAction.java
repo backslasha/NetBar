@@ -1,5 +1,7 @@
 package com.ajax;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -33,11 +35,20 @@ public class ComputerStatusAction implements Action {
 	private String handleUpdate(HttpServletRequest request, HttpServletResponse response) {
 		ComputerDAOImpl dao = new ComputerDAOImpl();
 		String colomnName= request.getParameter("columnName");
+		String value = request.getParameter(colomnName);
+		String computerNo = request.getParameter("computerNo");
+		try {
+			value = URLDecoder.decode(request.getParameter(colomnName),"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if(colomnName.equals("comment")) {
+			if(dao.updateComment(Long.parseLong(computerNo), value)) {
+				return "{\"result\":\""+value+"\"}";
+			}
 			return UPDATE_FAIL;
 		}else if(colomnName.equals("status")) {
-			String value = request.getParameter(colomnName);
-			String computerNo = request.getParameter("computerNo");
 			if(dao.updateStatus(Long.parseLong(computerNo), value)) {
 				return "{\"result\":\""+value+"\"}";
 			}

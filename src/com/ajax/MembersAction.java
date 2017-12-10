@@ -1,5 +1,7 @@
 package com.ajax;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,10 +17,50 @@ import com.google.gson.JsonObject;
 
 public class MembersAction implements Action {
 	private static final String EMPTY_RESULT = "没有更多数据啦！";
-
+	private static final String UPDATE_FAIL = "更新失败！注意字符数据不能超过 225 字符";
 	@Override
 	public String ajax(HttpServletRequest request, HttpServletResponse response) {
+		String type = request.getParameter("type");
+		switch(type) {
+		case "query":
+			return handleQuery(request,response);
+		case "update":
+			return handleUpdate(request,response);
+		default :
+			return EMPTY_RESULT;
+		}
+	
+	}
 
+	private String handleUpdate(HttpServletRequest request, HttpServletResponse response) {
+		MemberDAOImpl dao = new MemberDAOImpl();
+		String colomnName= request.getParameter("columnName");
+		if(colomnName.equals("status")) {
+			return UPDATE_FAIL;
+		}else if(colomnName.equals("gender")) {
+			String value = null;
+			try {
+				value = URLDecoder.decode(request.getParameter(colomnName),"UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				System.out.println("服务器接收到数据："+URLDecoder.decode(value, "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String memberNo = request.getParameter("memberNo");
+			if(dao.updateGender(Long.parseLong(memberNo), value)) {
+				return "{\"result\":\""+value+"\"}";
+			}
+			return UPDATE_FAIL;
+		}
+		return UPDATE_FAIL;
+	}
+
+	private String handleQuery(HttpServletRequest request, HttpServletResponse response) {
 		MemberDAOImpl dao = new MemberDAOImpl();
 		List<Member> members; 
 		
