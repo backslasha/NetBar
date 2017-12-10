@@ -58,7 +58,7 @@ td{
 	padding: 10px !important;
 }
 .main {
-	width: 1024px;
+	width: 1120px;
 	margin: 64px auto;
 	padding: 0 auto;
 	overflow: hidden;

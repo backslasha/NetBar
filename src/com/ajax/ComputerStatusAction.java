@@ -99,9 +99,9 @@ public class ComputerStatusAction implements Action {
 		JsonArray jsonArrayRoot = new JsonArray();
 		computers.forEach(computer -> {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("电脑编号", computer.getComputerNo());
-			jsonObject.addProperty("电脑状态", toChinese(computer.getStatus()));
-			jsonObject.addProperty("备注", computer.getComment());
+			jsonObject.addProperty("computerNo", computer.getComputerNo());
+			jsonObject.addProperty("status", computer.getStatus());
+			jsonObject.addProperty("comment", computer.getComment());
 			jsonArrayRoot.add(jsonObject);
 		});
 		jsonObjectRoot.add("computerStatus", jsonArrayRoot);

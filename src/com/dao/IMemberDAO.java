@@ -33,5 +33,5 @@ public interface IMemberDAO {
 	
 	boolean updateLastLoginTime(long memberNo);
 
-	boolean updatePassword(String password);
+	boolean updatePassword(long memberNo,String password);
 }
