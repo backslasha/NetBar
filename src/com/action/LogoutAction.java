@@ -26,61 +26,27 @@ public class LogoutAction implements Action {
 		case "member":
 			return handleMemberLogout(request,response);
 		case "manager":
-			return handleManagerLogin(request,response);
+			return handleManagerLogout(request,response);
 		case "boss":
-			return handleBossLogin(request,response);
+			return handleBossLogout(request,response);
 		default:
 			return "error.jsp";
 		}
 	}
 
-	private String handleBossLogin(HttpServletRequest request, HttpServletResponse response) {
-		String userNo = request.getParameter("userNo");
-		String password = request.getParameter("password");
-		Boss boss = new BossDAOImpl().query(userNo);
-		try {
-			if (boss != null) {
-				if (boss.getPassword().equals(password)) {
-					request.getSession().setAttribute("boss", boss);
-					return "boss.jsp";
-				} else {
-					request.getSession().setAttribute("message", "password incorect!");
-					return "login.jsp";
-				}
-
-			} else {
-				request.getSession().setAttribute("message", "boss is not exists!");
-				return "login.jsp";
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "error.jsp";
+	private String handleBossLogout(HttpServletRequest request, HttpServletResponse response) {
+		request.getSession().invalidate();
+		return "login.jsp";
 	}
 
-	private String handleManagerLogin(HttpServletRequest request, HttpServletResponse response) {
-		String userNo = request.getParameter("userNo");
-		String password = request.getParameter("password");
-		Manager manager = new ManagerDAOImpl().query(Long.parseLong(userNo));
-		try {
-			if (manager != null) {
-				if (manager.getPassword().equals(password)) {
-					request.getSession().setAttribute("manager", manager);
-					return "manager.jsp";
-				} else {
-					request.getSession().setAttribute("message", "password incorect!");
-					return "login.jsp";
-				}
+	private String handleManagerLogout(HttpServletRequest request, HttpServletResponse response) {
+		String managerNo = request.getParameter("managerNo");
+		ManagerDAOImpl dao = new ManagerDAOImpl();
 
-			} else {
-				request.getSession().setAttribute("message", "manager is not exists!");
-				return "login.jsp";
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(dao.updateStatus(Long.parseLong(managerNo), "offline")) {
+			request.getSession().removeAttribute("loginedManager");
+			request.getSession().removeAttribute("manager");
+			return "login.jsp";
 		}
 
 		return "error.jsp";
@@ -115,7 +81,9 @@ public class LogoutAction implements Action {
 		consumption.setTimeLogout(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		consumption.setCost(Counter.expense(minutes));
 		
-		request.getSession().invalidate();
+		request.getSession().removeAttribute("loginedMember");
+		request.getSession().removeAttribute("member");
+		request.getSession().removeAttribute("computer");
 		
 		if(consumptionDAOImpl.insert(consumption)) {
 			System.out.println("insert a consumption success.");

@@ -15,7 +15,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>网吧管理员</title>
-<script charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		window.containerContent="managerMessage";
@@ -37,12 +37,13 @@
 	     });
 	});
 </script>
-<script charset="utf-8" src="js/mains.js"></script>
-<script charset="utf-8" src="js/middle.js"></script>
+<script charset="utf-8" src="js/manager_operation.js"></script>
+<script charset="utf-8" src="js/core.js"></script>
 
 <style type="text/css">
 body {
-	background-image: url(images/background.jpg);
+	/*background-image: url(images/background.jpg);*/
+	    background-color: steelblue;
 }
 
 td{
@@ -83,6 +84,23 @@ td{
 	float: left;
 	width: auto;
 }
+
+#text1{
+    transform: rotate(333deg);
+    position: fixed;
+    right: 0px;
+    font-size: -webkit-xxx-large;
+    bottom: 190px;
+}
+
+#text2{
+    transform: rotate(333deg);
+    position: fixed;
+    right: 0px;
+    font-size: -webkit-xxx-large;
+    bottom: 113px;
+}
+}
 </style>
 </head>
 
@@ -109,18 +127,25 @@ td{
 		<button class="ui button menu" style="display: inline"
 			onclick="computerUses(0,7)">使用记录</button>
 
-		<button class="ui button menu" style="display: inline" onclick="">损坏记录</button>
+		<button class="ui button menu" style="display: inline"
+			 onclick="brokenRecords(0,7)">损坏记录</button>
 
-		<button class="ui button menu" style="display: inline" onclick="">管理中心</button>
+		<button class="ui button menu" style="display: inline" 
+			onclick="insertMember()">新会员</button>
 
-		<button class="ui button menu" style="display: inline" onclick="">登出</button>
+		<button class="ui button menu" style="display: inline"
+			 onclick="insertComputer()">新电脑</button>
+
+		<button class="ui button menu" style="display: inline" 
+			onclick="logout('manager',<%=manager.getManagerNo()%>)">登出</button>
 
 	</div>
 
 	<div style="display: inline; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 	<div id='container' class='ui segment content'
 		style="float: left; min-width: 640px"></div>
-
+	<text id="text1">童叟无欺</text>
+	<text id="text2">良心网吧</text>
 </div>
 </body>
 <script type="text/javascript">

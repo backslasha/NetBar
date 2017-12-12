@@ -1,5 +1,7 @@
 package com.dao.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -134,7 +136,12 @@ public class ConsumptionDAOImpl implements IConsumptionDAO {
 		dao.list(3, 4, "date", "2017-12-08").forEach(value -> {
 			System.out.println(value);
 		});
-		System.out.println();
+		try {
+			System.out.println(URLDecoder.decode("%E9%82%93%E7%B4%AB%E6%A3%8B","utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JDBCUtils.instance().releaseConn();
 	}
 

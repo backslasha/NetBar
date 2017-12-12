@@ -4,6 +4,9 @@ public class Computer {
 	long computerNo;
 	String status = "idle";
 	String comment;
+	public Computer() {
+		// TODO Auto-generated constructor stub
+	}
 	@Override
 	public String toString() {
 		return "Computer [computerNO=" + computerNo + ", status=" + status + ", comment=" + comment + "]";
@@ -16,6 +19,12 @@ public class Computer {
 	}
 	public String getStatus() {
 		return status;
+	}
+	public Computer(long computerNo, String status, String comment) {
+		super();
+		this.computerNo = computerNo;
+		this.status = status;
+		this.comment = comment;
 	}
 	public void setStatus(String status) {
 		this.status = status;

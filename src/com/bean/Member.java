@@ -24,6 +24,10 @@ public class Member {
 	int age;
 	BigDecimal funds;
 	Timestamp lastLoginDate;
+	
+	public Member() {
+		// TODO Auto-generated constructor stub
+	}
 	@Override
 	public String toString() {
 		return "Member [memberNo=" + memberNo + ", password=" + password + ", name=" + name + ", status=" + status
@@ -76,6 +80,15 @@ public class Member {
 	}
 	public void setLastLoginDate(Timestamp lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
+	}
+	public Member(long memberNo, String password, String name, String gender, int age, BigDecimal funds) {
+		super();
+		this.memberNo = memberNo;
+		this.password = password;
+		this.name = name;
+		this.gender = gender;
+		this.age = age;
+		this.funds = funds;
 	}
 	
 }

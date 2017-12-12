@@ -9,15 +9,23 @@ import com.bean.Member;
 public interface IManagerDAO {
 	Manager query(long managerNo);
 
-	List<Manager> queryAll();
-	
-	boolean add(Manager manager);
+	List<Manager> list();
+	List<Manager> list(int start,int count) ;
+	List<Manager> list(int start,int count, String filter, String filterValue) ;
+	boolean insert(Manager manager);
 
 	boolean delete(long managerNo);
 
 	boolean update(long managerNo, Manager manager);
 
-	boolean updatePassword(String password);
+	boolean updatePassword(long managerNo, String password);
+
+	boolean updateSalary(long managerNo, int salary);
+	
+	boolean updateGender(long managerNo, String gender);
+
+	
+	boolean updateStatus(long managerNo, String status);
 	
 	// 浏览电脑使用情况的信息，查询； 
 	// 浏览管理人员工资信息，对管理人员信息的查询； 

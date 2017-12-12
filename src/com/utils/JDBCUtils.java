@@ -224,10 +224,12 @@ public class JDBCUtils {
 			// 通过反射机制创建一个实例
 			T resultObject = cls.newInstance();
 			for (int i = 0; i < cols_len; i++) {
+				
 				String cols_name = metaData.getColumnName(i + 1);
 				Object cols_value = resultSet.getObject(cols_name);
+				
 				if (cols_value == null) {
-					cols_value = "";
+					continue;
 				}
 				Field field = cls.getDeclaredField(cols_name);
 				field.setAccessible(true); // 打开javabean的访问权限

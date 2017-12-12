@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ajax.ActionFactory;
-import com.ajax.Action;
+import com.ajax.AJAXFactory;
+import com.ajax.AJAX;
 
 /**
  * Servlet implementation class AjaxServlet
@@ -53,7 +53,7 @@ public class AjaxServlet extends HttpServlet {
 		String actionName = pathName.substring(1, index);
 		String actionClassName = this.getInitParameter(actionName);
 		if(actionClassName!=null) {
-			Action action =  ActionFactory.getActionFactory().getAction(actionClassName);
+			AJAX action =  AJAXFactory.getActionFactory().getAction(actionClassName);
 			String responseText = action.ajax(request, response);
 			response.getWriter().print(responseText);
 			System.out.println(responseText);

@@ -136,4 +136,20 @@ public class ComputerDAOImpl implements IComputerDAO {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean insert(Computer computer) {
+		String sql = "insert into Computer(computerNo,status,comment) values (?,?,?)";
+		List<Object> params = new ArrayList<>();
+		params.add(computer.getComputerNo());
+		params.add(computer.getStatus());
+		params.add(computer.getComment());
+		try {
+			return utils.updateByPreparedStatement(sql, params);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

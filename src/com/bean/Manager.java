@@ -13,6 +13,25 @@ public class Manager {
 	String password;
 	String name;
 	String gender;
+	String status = "offline";
+	public String getStatus() {
+		return status;
+	}
+	public Manager() {
+		super();
+	}
+	public Manager(long managerNo, String password, String name, String gender, int age, int salary) {
+		super();
+		this.managerNo = managerNo;
+		this.password = password;
+		this.name = name;
+		this.gender = gender;	
+		this.age = age;
+		this.salary = salary;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	int age;
 	int salary;
 	public long getManagerNo() {

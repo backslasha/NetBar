@@ -76,7 +76,20 @@ public class MemberDAOImpl implements IMemberDAO {
 
 	@Override
 	public boolean add(Member member) {
-		// TODO Auto-generated method stub
+		String sql = "insert into Member(name,gender,age,memberNo,password,funds) values (?,?,?,?,?,?)";
+		List<Object> params = new ArrayList<>();
+		params.add(member.getName());
+		params.add(member.getGender());
+		params.add(member.getAge());
+		params.add(member.getMemberNo());
+		params.add(member.getPassword());
+		params.add(member.getFunds());
+		try {
+			return utils.updateByPreparedStatement(sql, params);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
