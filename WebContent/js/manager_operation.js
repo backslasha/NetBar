@@ -127,6 +127,7 @@ function members(start,count){
 	addFilterBar(container,members,{
 		"memberNo":"会员帐号",
 		"lastLoginDate":"最近登陆",
+		"status":"状态",
 		"none":"不过滤"
 	});
 	
@@ -433,7 +434,7 @@ function insertComputer(){
 }
 
 function logout(userType,userNo){
-	window.alert("结帐成功！本次上机时间为软妹币！");
+	window.alert("下班啦？？！");
 	if(userType=="manager"){
 		window.location.href="logout.do?userType=manager&managerNo="+userNo;
 	}else	if(userType=="boss"){
